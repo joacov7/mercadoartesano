@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MercadoArtesano — Preview</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-900: #1a3009;
+      --green-800: #2D5016;
+      --green-700: #3d6b1f;
+      --green-600: #4e8828;
+      --green-500: #5fa531;
+      --green-100: #eaf4df;
+      --green-50:  #f4fbed;
+      --brown-800: #3b2005;
+      --brown-600: #6b3d11;
+      --brown-400: #a0632b;
+      --brown-200: #d4a574;
+      --brown-100: #f0dfc4;
+      --cream:     #fdf8f0;
+      --gold:      #c9931a;
+      --gold-light:#f5d98a;
+      --gray-900:  #111827;
+      --gray-700:  #374151;
+      --gray-500:  #6b7280;
+      --gray-300:  #d1d5db;
+      --gray-100:  #f3f4f6;
+      --white:     #ffffff;
+      --red:       #ef4444;
+      --wa-green:  #25D366;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #e5e7eb;
+      color: var(--gray-900);
+    }
+
+    /* ── PRESENTATION WRAPPER ── */
+    .presentation {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    .presentation-title {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .presentation-title h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--green-800);
+    }
+    .presentation-title p {
+      color: var(--gray-500);
+      margin-top: 8px;
+      font-size: 1rem;
+    }
+
+    /* ── SCREEN WRAPPER ── */
+    .screen-section {
+      margin-bottom: 80px;
+    }
+    .screen-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+      margin-bottom: 12px;
+      padding-left: 4px;
+    }
+    .phone-frame {
+      width: 390px;
+      min-height: 844px;
+      background: var(--white);
+      border-radius: 44px;
+      box-shadow: 0 0 0 10px #1c1c1e, 0 40px 80px rgba(0,0,0,0.4);
+      overflow: hidden;
+      position: relative;
+      margin: 0 auto;
+    }
+    .desktop-frame {
+      width: 100%;
+      max-width: 1280px;
+      min-height: 720px;
+      background: var(--white);
+      border-radius: 16px;
+      box-shadow: 0 0 0 1px var(--gray-300), 0 24px 60px rgba(0,0,0,0.18);
+      overflow: hidden;
+      margin: 0 auto;
+    }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px 4px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--white);
+    }
+    .status-bar .notch {
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 120px; height: 30px;
+      background: #1c1c1e;
+      border-radius: 0 0 20px 20px;
+    }
+
+    /* ── NAVBAR MOBILE ── */
+    .navbar-mobile {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-100);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .logo-text {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--green-800);
+    }
+    .logo-text span { color: var(--brown-400); }
+    .nav-icons { display: flex; gap: 14px; align-items: center; }
+    .nav-icon {
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      background: var(--gray-100);
+      color: var(--gray-700);
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .avatar-nav {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--green-800);
+      color: var(--white);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-bar {
+      padding: 10px 16px;
+      background: var(--white);
+    }
+    .search-input {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--gray-100);
+      border-radius: 24px;
+      padding: 8px 14px;
+      color: var(--gray-500);
+      font-size: 14px;
+    }
+
+    /* ── TABS SWITCH ── */
+    .home-tabs {
+      display: flex;
+      background: var(--white);
+      padding: 0 16px 10px;
+      gap: 8px;
+    }
+    .tab-pill {
+      flex: 1;
+      text-align: center;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-pill.active { background: var(--green-800); color: var(--white); }
+    .tab-pill.inactive { background: var(--gray-100); color: var(--gray-500); }
+
+    /* ── FILTER CHIPS ── */
+    .filter-bar {
+      display: flex;
+      gap: 8px;
+      padding: 8px 16px 12px;
+      overflow-x: auto;
+      background: var(--white);
+      scrollbar-width: none;
+    }
+    .filter-chip {
+      white-space: nowrap;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      border: 1.5px solid var(--gray-300);
+      color: var(--gray-700);
+      background: var(--white);
+    }
+    .filter-chip.active {
+      border-color: var(--green-700);
+      background: var(--green-50);
+      color: var(--green-800);
+    }
+
+    /* ── PRODUCT GRID ── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: var(--gray-100);
+    }
+    .product-card {
+      position: relative;
+      background: var(--white);
+      cursor: pointer;
+      overflow: hidden;
+    }
+    .product-img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      display: block;
+      background: var(--brown-100);
+    }
+    .product-img-placeholder {
+      width: 100%;
+      aspect-ratio: 1/1;
+      background: linear-gradient(135deg, var(--brown-100), var(--green-100));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+    .product-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+      padding: 28px 10px 10px;
+    }
+    .product-price {
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .product-title-overlay {
+      color: rgba(255,255,255,0.85);
+      font-size: 11px;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .product-badge {
+      position: absolute;
+      top: 8px; left: 8px;
+      background: var(--gold);
+      color: var(--white);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 20px;
+    }
+    .heart-btn {
+      position: absolute;
+      top: 8px; right: 8px;
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .artisan-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px 8px;
+      background: var(--white);
+    }
+    .artisan-mini-avatar {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: var(--green-700);
+      color: var(--white);
+      font-size: 9px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .artisan-mini-name {
+      font-size: 11px;
+      color: var(--gray-500);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .views-count { font-size: 10px; color: var(--gray-500); margin-left: auto; }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      position: sticky;
+      bottom: 0;
+      display: flex;
+      background: var(--white);
+      border-top: 1px solid var(--gray-100);
+      padding: 8px 0 16px;
+    }
+    .bottom-nav-item {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      font-size: 10px;
+      color: var(--gray-500);
+      cursor: pointer;
+    }
+    .bottom-nav-item.active { color: var(--green-800); }
+    .bottom-nav-icon { font-size: 20px; }
+
+    /* ── SECTION DIVIDER ── */
+    .divider-text {
+      background: var(--gray-100);
+      padding: 10px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gray-500);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* ── STORE PAGE ── */
+    .store-banner {
+      width: 100%;
+      height: 140px;
+      background: linear-gradient(135deg, var(--green-800), var(--brown-600));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem;
+      position: relative;
+    }
+    .store-logo-wrap {
+      position: absolute;
+      bottom: -36px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .store-logo {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      border: 3px solid var(--white);
+      background: var(--brown-400);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .store-info {
+      padding: 48px 16px 16px;
+      text-align: center;
+      background: var(--white);
+    }
+    .store-name { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); }
+    .store-location { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+    .store-bio { font-size: 13px; color: var(--gray-700); margin-top: 8px; line-height: 1.5; }
+    .store-stats {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--gray-100);
+    }
+    .stat-item { text-align: center; }
+    .stat-num { font-size: 1rem; font-weight: 800; color: var(--green-800); }
+    .stat-label { font-size: 10px; color: var(--gray-500); }
+    .store-actions {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .btn-primary {
+      flex: 1;
+      background: var(--green-800);
+      color: var(--white);
+      border: none;
+      border-radius: 20px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+    .btn-outline {
+      flex: 1;
+      background: var(--white);
+      color: var(--gray-700);
+      border: 1.5px solid var(--gray-300);
+      border-radius: 20px;
+      padding: 9px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+
+    /* ── PRODUCT DETAIL ── */
+    .product-detail-img {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, var(--brown-100), var(--green-100));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+      position: relative;
+    }
+    .img-dots {
+      position: absolute;
+      bottom: 12px;
+      left: 50%; transform: translateX(-50%);
+      display: flex; gap: 5px;
+    }
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+    }
+    .dot.active { background: var(--white); width: 16px; border-radius: 3px; }
+    .product-detail-info {
+      padding: 16px;
+      background: var(--white);
+    }
+    .product-category-tag {
+      display: inline-block;
+      background: var(--green-100);
+      color: var(--green-800);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
+    }
+    .product-detail-title { font-size: 1.1rem; font-weight: 700; color: var(--gray-900); }
+    .product-detail-price { font-size: 1.5rem; font-weight: 800; color: var(--green-800); margin-top: 4px; }
+    .price-sub { font-size: 12px; color: var(--gray-500); font-weight: 400; }
+    .stock-badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--green-50);
+      border: 1px solid var(--green-100);
+      color: var(--green-800);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 8px;
+    }
+    .product-desc {
+      font-size: 13px;
+      color: var(--gray-700);
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+    .artisan-card {
+      display: flex; align-items: center; gap: 10px;
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--gray-100);
+      border-radius: 12px;
+    }
+    .artisan-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--green-800);
+      color: var(--white);
+      font-size: 16px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .artisan-info-name { font-size: 14px; font-weight: 700; color: var(--gray-900); }
+    .artisan-info-sub { font-size: 11px; color: var(--gray-500); margin-top: 1px; }
+    .rep-badge {
+      margin-left: auto;
+      display: flex; flex-direction: column; align-items: center;
+      background: var(--white);
+      border-radius: 8px;
+      padding: 6px 10px;
+    }
+    .rep-num { font-size: 14px; font-weight: 800; color: var(--gold); }
+    .rep-label { font-size: 9px; color: var(--gray-500); }
+    .action-buttons {
+      display: flex; flex-direction: column; gap: 8px;
+      padding: 16px;
+      background: var(--white);
+      border-top: 1px solid var(--gray-100);
+    }
+    .btn-wa {
+      background: var(--wa-green);
+      color: var(--white);
+      border: none;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-wa-outline {
+      background: var(--white);
+      color: var(--wa-green);
+      border: 2px solid var(--wa-green);
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    /* ── SUCCESS / QR PAGE ── */
+    .success-page {
+      padding: 30px 20px;
+      display: flex; flex-direction: column; align-items: center;
+      background: var(--white);
+      min-height: 600px;
+    }
+    .success-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--green-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+    .success-title { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); text-align: center; }
+    .success-sub { font-size: 13px; color: var(--gray-500); text-align: center; margin-top: 4px; line-height: 1.5; }
+    .qr-container {
+      margin: 24px 0;
+      padding: 20px;
+      border: 2px dashed var(--gray-300);
+      border-radius: 16px;
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+    }
+    .qr-box {
+      width: 160px; height: 160px;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      display: grid;
+      grid-template-columns: repeat(8,1fr);
+      grid-template-rows: repeat(8,1fr);
+      gap: 2px;
+      padding: 10px;
+      overflow: hidden;
+    }
+    .qr-cell {
+      border-radius: 1px;
+      background: var(--gray-900);
+    }
+    .qr-cell.w { background: transparent; }
+    .order-code {
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      color: var(--green-800);
+      padding: 8px 16px;
+      background: var(--green-50);
+      border-radius: 8px;
+      border: 1px solid var(--green-100);
+    }
+    .order-hint { font-size: 11px; color: var(--gray-500); text-align: center; }
+
+    /* ── DASHBOARD ── */
+    .dashboard-wrap {
+      display: flex;
+      min-height: 720px;
+    }
+    .dash-sidebar {
+      width: 220px;
+      background: var(--gray-900);
+      padding: 20px 0;
+      display: flex; flex-direction: column;
+      flex-shrink: 0;
+    }
+    .dash-logo {
+      padding: 0 20px 20px;
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--white);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .dash-logo span { color: var(--gold); }
+    .dash-user-info {
+      padding: 16px 20px;
+      display: flex; align-items: center; gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .dash-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--green-700);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .dash-user-name { font-size: 13px; font-weight: 700; color: var(--white); }
+    .dash-user-role { font-size: 10px; color: var(--gray-500); }
+    .dash-nav { padding: 12px 0; flex: 1; }
+    .dash-nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 20px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .dash-nav-item:hover, .dash-nav-item.active {
+      background: rgba(255,255,255,0.08);
+      color: var(--white);
+    }
+    .dash-nav-item.active { border-left: 3px solid var(--green-500); padding-left: 17px; }
+    .dash-nav-icon { font-size: 16px; width: 20px; text-align: center; }
+    .dash-content {
+      flex: 1;
+      background: var(--cream);
+      overflow: auto;
+    }
+    .dash-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-100);
+      padding: 16px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .dash-header h2 { font-size: 1.1rem; font-weight: 700; color: var(--gray-900); }
+    .btn-sm-primary {
+      background: var(--green-800);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .dash-body { padding: 24px; }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--white);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .stat-card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+    .stat-card-num { font-size: 1.6rem; font-weight: 800; color: var(--gray-900); }
+    .stat-card-label { font-size: 12px; color: var(--gray-500); margin-top: 2px; }
+    .stat-card-trend { font-size: 11px; color: var(--green-700); margin-top: 4px; font-weight: 600; }
+    .products-table {
+      background: var(--white);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    }
+    .table-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 80px;
+      padding: 12px 16px;
+      background: var(--gray-100);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .table-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 80px;
+      padding: 14px 16px;
+      align-items: center;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 13px;
+    }
+    .table-row:last-child { border-bottom: none; }
+    .table-product-cell { display: flex; align-items: center; gap: 10px; }
+    .table-thumb {
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--brown-100), var(--green-100));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .table-product-name { font-weight: 600; color: var(--gray-900); }
+    .table-product-cat { font-size: 11px; color: var(--gray-500); }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .status-green { background: var(--green-50); color: var(--green-800); border: 1px solid var(--green-100); }
+    .status-amber { background: #fef9c3; color: #92400e; border: 1px solid #fde68a; }
+    .status-red { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    .action-btn-row { display: flex; gap: 6px; }
+    .icon-btn {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      cursor: pointer;
+      border: 1px solid var(--gray-200);
+      background: var(--white);
+      color: var(--gray-500);
+    }
+
+    /* ── ADMIN PANEL ── */
+    .admin-sidebar { background: #0f172a; }
+    .admin-sidebar .dash-logo { color: var(--gold); }
+    .admin-sidebar .dash-nav-item.active { border-color: var(--gold); }
+
+    /* ── FLOW DIAGRAM ── */
+    .flow-section {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .flow-title { font-size: 1.1rem; font-weight: 700; color: var(--gray-900); margin-bottom: 24px; text-align: center; }
+    .flow-steps {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      row-gap: 16px;
+    }
+    .flow-step {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      width: 110px;
+    }
+    .flow-step-icon {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--green-100);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      border: 2px solid var(--green-200, #bbf7d0);
+    }
+    .flow-step-label { font-size: 11px; font-weight: 600; color: var(--gray-700); text-align: center; line-height: 1.3; }
+    .flow-arrow { font-size: 1.2rem; color: var(--gray-300); margin: 0 -4px; padding-bottom: 20px; }
+
+    /* ── PALETTE ── */
+    .palette-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+    .palette-chip {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+    }
+    .palette-color {
+      width: 56px; height: 56px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    .palette-name { font-size: 10px; color: var(--gray-500); text-align: center; }
+
+    /* ── GRID LAYOUT FOR SIDE BY SIDE ── */
+    .side-by-side {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    .single-center { max-width: 390px; margin: 0 auto; }
+
+    @media (max-width: 768px) {
+      .side-by-side { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* scrollbar hide */
+    .filter-bar::-webkit-scrollbar { display: none; }
+
+    .tag {
+      display: inline-block; background: var(--green-800); color: var(--white);
+      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px;
+      margin-right: 4px;
+    }
+    .section-heading {
+      font-size: 1.4rem; font-weight: 800; color: var(--gray-900);
+      margin-bottom: 4px;
+    }
+    .section-desc {
+      font-size: 0.85rem; color: var(--gray-500);
+      margin-bottom: 24px;
+    }
+
+    hr.section-sep {
+      border: none;
+      border-top: 2px dashed var(--gray-200);
+      margin: 60px 0;
+    }
+  </style>
+</head>
+<body>
+<div class="presentation">
+
+  <!-- TITLE -->
+  <div class="presentation-title">
+    <h1>🧉 MercadoArtesano</h1>
+    <p>Presentación de pantallas — Marketplace de artesanos de mate de Argentina</p>
+  </div>
+
+  <!-- ══════════ FLOW ══════════ -->
+  <div class="screen-section">
+    <div class="screen-label">Flujo principal de la plataforma</div>
+    <div class="flow-section">
+      <div class="flow-title">Del producto al WhatsApp en segundos</div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-icon">🔍</div>
+          <div class="flow-step-label">Navega productos</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-icon">🛍️</div>
+          <div class="flow-step-label">Selecciona producto</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-icon">📋</div>
+          <div class="flow-step-label">Genera orden</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-icon">📱</div>
+          <div class="flow-step-label">Se crea QR único</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-icon" style="background:#d9fbe8;">💬</div>
+          <div class="flow-step-label">Abre WhatsApp con el vendedor</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-icon">🤝</div>
+          <div class="flow-step-label">Coordina pago y envío</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">
+          <div class="flow-step-icon" style="background:#fef9c3;">⭐</div>
+          <div class="flow-step-label">QR valida entrega y sube reputación</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-sep" />
+
+  <!-- ══════════ HOME PAGE ══════════ -->
+  <div class="screen-section">
+    <div class="screen-label">Pantalla 1 — Home (Mobile)</div>
+    <div class="section-heading">Página de Inicio</div>
+    <div class="section-desc">Grid estilo Instagram con switch Mates/Insumos, buscador y filtros dinámicos</div>
+    <div class="phone-frame" style="min-height:900px;">
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="notch"></div>
+        <span>●●●</span>
+      </div>
+
+      <!-- Navbar -->
+      <div class="navbar-mobile">
+        <div class="logo-text">Mercado<span>Artesano</span></div>
+        <div class="nav-icons">
+          <div class="nav-icon">🔔</div>
+          <div class="nav-icon">🛒</div>
+          <div class="avatar-nav">JV</div>
+        </div>
+      </div>
+
+      <!-- Search -->
+      <div class="search-bar">
+        <div class="search-input">
+          <span>🔍</span>
+          <span>Buscar mates, bombillas, cueros...</span>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="home-tabs">
+        <div class="tab-pill active">🧉 Galería de Mates</div>
+        <div class="tab-pill inactive">🌿 Taller de Insumos</div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-bar">
+        <div class="filter-chip active">Todo</div>
+        <div class="filter-chip">📍 Misiones</div>
+        <div class="filter-chip">Mates Imperiales</div>
+        <div class="filter-chip">Camioneros</div>
+        <div class="filter-chip">Torpedos</div>
+        <div class="filter-chip">⭐ Destacados</div>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="product-grid">
+
+        <div class="product-card">
+          <div class="product-img-placeholder">🧉</div>
+          <div class="product-badge">⭐ Dest.</div>
+          <div class="heart-btn">🤍</div>
+          <div class="product-overlay">
+            <div class="product-price">$8.500</div>
+            <div class="product-title-overlay">Imperial Palo Santo Tallado</div>
+          </div>
+          <div class="artisan-row">
+            <div class="artisan-mini-avatar">J</div>
+            <div class="artisan-mini-name">El Matero de Juan</div>
+            <div class="views-count">342 👁</div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img-placeholder">🌿</div>
+          <div class="heart-btn">❤️</div>
+          <div class="product-overlay">
+            <div class="product-price">$3.500</div>
+            <div class="product-title-overlay">Cuero Marrón Artesanal</div>
+          </div>
+          <div class="artisan-row">
+            <div class="artisan-mini-avatar" style="background:var(--brown-600);">M</div>
+            <div class="artisan-mini-name">Cueros del Sur</div>
+            <div class="views-count">234 👁</div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img-placeholder">🎋</div>
+          <div class="product-badge" style="background:var(--brown-400);">Mayor.</div>
+          <div class="heart-btn">🤍</div>
+          <div class="product-overlay">
+            <div class="product-price">$18.000</div>
+            <div class="product-title-overlay">Pack 12 Bombillas Acero</div>
+          </div>
+          <div class="artisan-row">
+            <div class="artisan-mini-avatar" style="background:var(--brown-800);">C</div>
+            <div class="artisan-mini-name">Bombillas del Norte</div>
+            <div class="views-count">445 👁</div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img-placeholder">🍐</div>
+          <div class="heart-btn">🤍</div>
+          <div class="product-overlay">
+            <div class="product-price">$11.000</div>
+            <div class="product-title-overlay">Torpedo Lapacho + Virola</div>
+          </div>
+          <div class="artisan-row">
+            <div class="artisan-mini-avatar">J</div>
+            <div class="artisan-mini-name">El Matero de Juan</div>
+            <div class="views-count">521 👁</div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img-placeholder">🎍</div>
+          <div class="heart-btn">🤍</div>
+          <div class="product-overlay">
+            <div class="product-price">$2.800</div>
+            <div class="product-title-overlay">Bombilla Alpaca Cebadora</div>
+          </div>
+          <div class="artisan-row">
+            <div class="artisan-mini-avatar" style="background:var(--brown-800);">C</div>
+            <div class="artisan-mini-name">Bombillas del Norte</div>
+            <div class="views-count">678 👁</div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-img-placeholder">🪔</div>
+          <div class="heart-btn">🤍</div>
+          <div class="product-overlay">
+            <div class="product-price">$1.200</div>
+            <div class="product-title-overlay">Calabaza Imperial Curada</div>
+          </div>
+          <div class="artisan-row">
+            <div class="artisan-mini-avatar" style="background:var(--green-600);">S</div>
+            <div class="artisan-mini-name">Calabazas Naturales</div>
+            <div class="views-count">145 👁</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Nav -->
+      <div class="bottom-nav">
+        <div class="bottom-nav-item active">
+          <div class="bottom-nav-icon">🏠</div>
+          <span>Inicio</span>
+        </div>
+        <div class="bottom-nav-item">
+          <div class="bottom-nav-icon">🔍</div>
+          <span>Explorar</span>
+        </div>
+        <div class="bottom-nav-item">
+          <div class="bottom-nav-icon">❤️</div>
+          <span>Guardados</span>
+        </div>
+        <div class="bottom-nav-item">
+          <div class="bottom-nav-icon">👤</div>
+          <span>Perfil</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-sep" />
+
+  <!-- ══════════ STORE + PRODUCT DETAIL ══════════ -->
+  <div class="screen-section">
+    <div class="screen-label">Pantallas 2 y 3 — Tienda pública · Detalle de producto</div>
+    <div class="side-by-side">
+
+      <!-- Store Page -->
+      <div>
+        <div class="section-heading">Tienda Pública</div>
+        <div class="section-desc">/tienda/juanelmatero — Sin navbar global, SEO dinámico</div>
+        <div class="phone-frame" style="min-height:860px;">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="notch"></div>
+            <span>●●●</span>
+          </div>
+
+          <!-- Store Banner -->
+          <div class="store-banner">
+            🌳
+            <div class="store-logo-wrap">
+              <div class="store-logo">🧉</div>
+            </div>
+          </div>
+
+          <div class="store-info">
+            <div class="store-name">El Matero de Juan ✅</div>
+            <div class="store-location">📍 Posadas, Misiones</div>
+            <div class="store-bio">Artesano misionero con 15 años tallando mates imperiales en palo santo y lapacho. Cada pieza es única y curada a mano.</div>
+            <div class="store-stats">
+              <div class="stat-item">
+                <div class="stat-num">47</div>
+                <div class="stat-label">Entregas</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">128</div>
+                <div class="stat-label">Seguidores</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-num">⭐ 47</div>
+                <div class="stat-label">Reputación</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="store-actions">
+            <button class="btn-primary">➕ Seguir</button>
+            <button class="btn-outline">📤 Compartir</button>
+            <button class="btn-outline" style="flex:0.6;">💬</button>
+          </div>
+
+          <div class="divider-text">4 Productos activos</div>
+
+          <div class="product-grid">
+            <div class="product-card">
+              <div class="product-img-placeholder">🧉</div>
+              <div class="product-badge">⭐</div>
+              <div class="product-overlay">
+                <div class="product-price">$8.500</div>
+              </div>
+              <div class="artisan-row">
+                <span style="font-size:11px;color:var(--gray-500);">Imperial Palo Santo</span>
+                <div class="views-count">342 👁</div>
+              </div>
+            </div>
+            <div class="product-card">
+              <div class="product-img-placeholder">🍐</div>
+              <div class="product-overlay">
+                <div class="product-price">$11.000</div>
+              </div>
+              <div class="artisan-row">
+                <span style="font-size:11px;color:var(--gray-500);">Torpedo + Virola</span>
+              </div>
+            </div>
+            <div class="product-card">
+              <div class="product-img-placeholder">🎋</div>
+              <div class="product-badge" style="background:var(--brown-400);">May.</div>
+              <div class="product-overlay">
+                <div class="product-price">$21.000</div>
+              </div>
+              <div class="artisan-row">
+                <span style="font-size:11px;color:var(--gray-500);">Pack 3 Imperiales</span>
+              </div>
+            </div>
+            <div class="product-card">
+              <div class="product-img-placeholder">🌀</div>
+              <div class="product-overlay">
+                <div class="product-price">$6.200</div>
+              </div>
+              <div class="artisan-row">
+                <span style="font-size:11px;color:var(--gray-500);">Camionero Quebracho</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Detail -->
+      <div>
+        <div class="section-heading">Detalle de Producto</div>
+        <div class="section-desc">/producto/[id] — Galería, info artesano, acciones WhatsApp</div>
+        <div class="phone-frame" style="min-height:860px;">
+          <div class="status-bar">
+            <span>9:41</span>
+            <div class="notch"></div>
+            <span>●●●</span>
+          </div>
+
+          <div class="navbar-mobile">
+            <div style="color:var(--gray-700);font-size:18px;">←</div>
+            <div class="logo-text" style="font-size:14px;">Detalle</div>
+            <div class="nav-icon">❤️</div>
+          </div>
+
+          <div class="product-detail-img">
+            🧉
+            <div class="img-dots">
+              <div class="dot active"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+          </div>
+
+          <div class="product-detail-info">
+            <div class="product-category-tag">🌿 Mates Imperiales</div>
+            <div class="product-detail-title">Mate Imperial Palo Santo Tallado</div>
+            <div class="product-detail-price">$8.500 <span class="price-sub">/ unidad</span></div>
+            <div style="margin-top:6px;">
+              <span class="stock-badge">🟢 Disponible</span>
+              <span class="status-pill status-amber" style="margin-left:6px;">Minorista</span>
+            </div>
+            <div class="product-desc">
+              Mate imperial tallado a mano en madera de palo santo. Diseño geométrico mapuche. Capacidad: 250ml. Incluye curado inicial. Envíos a todo el país.
+            </div>
+            <div class="artisan-card">
+              <div class="artisan-avatar">J</div>
+              <div>
+                <div class="artisan-info-name">El Matero de Juan ✅</div>
+                <div class="artisan-info-sub">📍 Posadas, Misiones</div>
+              </div>
+              <div class="rep-badge">
+                <div class="rep-num">⭐47</div>
+                <div class="rep-label">reputación</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn-wa">
+              💬 Comprar y coordinar por WhatsApp
+            </button>
+            <button class="btn-wa-outline">
+              💬 Consultar por WhatsApp
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-sep" />
+
+  <!-- ══════════ QR SUCCESS ══════════ -->
+  <div class="screen-section">
+    <div class="screen-label">Pantalla 4 — Pedido generado (Success + QR)</div>
+    <div class="section-heading">Orden & Código QR</div>
+    <div class="section-desc">/pedido/[codigo] — QR único por pedido, botón directo a WhatsApp</div>
+    <div class="phone-frame single-center" style="min-height:750px;">
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="notch"></div>
+        <span>●●●</span>
+      </div>
+
+      <div class="navbar-mobile">
+        <div style="color:var(--gray-700);font-size:18px;">←</div>
+        <div class="logo-text" style="font-size:14px;">Tu Pedido</div>
+        <div></div>
+      </div>
+
+      <div class="success-page">
+        <div class="success-icon">✅</div>
+        <div class="success-title">¡Pedido generado!</div>
+        <div class="success-sub">
+          Mostrá este QR al vendedor cuando recibas el producto para confirmar la entrega y sumar reputación.
+        </div>
+
+        <div class="qr-container">
+          <!-- Fake QR visual -->
+          <svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <rect width="160" height="160" fill="white"/>
+            <!-- Top-left finder -->
+            <rect x="10" y="10" width="45" height="45" rx="4" fill="#111827"/>
+            <rect x="18" y="18" width="29" height="29" rx="2" fill="white"/>
+            <rect x="24" y="24" width="17" height="17" rx="1" fill="#111827"/>
+            <!-- Top-right finder -->
+            <rect x="105" y="10" width="45" height="45" rx="4" fill="#111827"/>
+            <rect x="113" y="18" width="29" height="29" rx="2" fill="white"/>
+            <rect x="119" y="24" width="17" height="17" rx="1" fill="#111827"/>
+            <!-- Bottom-left finder -->
+            <rect x="10" y="105" width="45" height="45" rx="4" fill="#111827"/>
+            <rect x="18" y="113" width="29" height="29" rx="2" fill="white"/>
+            <rect x="24" y="119" width="17" height="17" rx="1" fill="#111827"/>
+            <!-- Data modules (random pattern) -->
+            <rect x="65" y="10" width="7" height="7" fill="#111827"/>
+            <rect x="75" y="10" width="7" height="7" fill="#111827"/>
+            <rect x="65" y="20" width="7" height="7" fill="#111827"/>
+            <rect x="85" y="10" width="7" height="7" fill="#111827"/>
+            <rect x="85" y="20" width="7" height="7" fill="#111827"/>
+            <rect x="75" y="30" width="7" height="7" fill="#111827"/>
+            <rect x="65" y="40" width="7" height="7" fill="#111827"/>
+            <rect x="85" y="40" width="7" height="7" fill="#111827"/>
+            <rect x="10" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="20" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="30" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="40" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="50" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="60" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="70" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="80" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="100" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="110" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="130" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="140" y="65" width="7" height="7" fill="#111827"/>
+            <rect x="10" y="75" width="7" height="7" fill="#111827"/>
+            <rect x="30" y="75" width="7" height="7" fill="#111827"/>
+            <rect x="50" y="75" width="7" height="7" fill="#111827"/>
+            <rect x="70" y="75" width="7" height="7" fill="#111827"/>
+            <rect x="90" y="75" width="7" height="7" fill="#111827"/>
+            <rect x="110" y="75" width="7" height="7" fill="#111827"/>
+            <rect x="130" y="75" width="7" height="7" fill="#111827"/>
+            <rect x="20" y="85" width="7" height="7" fill="#111827"/>
+            <rect x="40" y="85" width="7" height="7" fill="#111827"/>
+            <rect x="60" y="85" width="7" height="7" fill="#111827"/>
+            <rect x="80" y="85" width="7" height="7" fill="#111827"/>
+            <rect x="100" y="85" width="7" height="7" fill="#111827"/>
+            <rect x="120" y="85" width="7" height="7" fill="#111827"/>
+            <rect x="140" y="85" width="7" height="7" fill="#111827"/>
+            <rect x="65" y="100" width="7" height="7" fill="#111827"/>
+            <rect x="85" y="100" width="7" height="7" fill="#111827"/>
+            <rect x="105" y="100" width="7" height="7" fill="#111827"/>
+            <rect x="125" y="100" width="7" height="7" fill="#111827"/>
+            <rect x="75" y="110" width="7" height="7" fill="#111827"/>
+            <rect x="95" y="110" width="7" height="7" fill="#111827"/>
+            <rect x="115" y="110" width="7" height="7" fill="#111827"/>
+            <rect x="135" y="110" width="7" height="7" fill="#111827"/>
+            <rect x="65" y="120" width="7" height="7" fill="#111827"/>
+            <rect x="85" y="120" width="7" height="7" fill="#111827"/>
+            <rect x="105" y="120" width="7" height="7" fill="#111827"/>
+            <rect x="145" y="120" width="7" height="7" fill="#111827"/>
+            <rect x="75" y="130" width="7" height="7" fill="#111827"/>
+            <rect x="115" y="130" width="7" height="7" fill="#111827"/>
+            <rect x="135" y="130" width="7" height="7" fill="#111827"/>
+            <rect x="65" y="140" width="7" height="7" fill="#111827"/>
+            <rect x="95" y="140" width="7" height="7" fill="#111827"/>
+            <rect x="125" y="140" width="7" height="7" fill="#111827"/>
+            <rect x="145" y="140" width="7" height="7" fill="#111827"/>
+            <!-- Logo in center -->
+            <rect x="68" y="68" width="24" height="24" rx="4" fill="white"/>
+            <text x="80" y="84" text-anchor="middle" font-size="14">🧉</text>
+          </svg>
+
+          <div class="order-code">PED-X7K2M9</div>
+          <div class="order-hint">Guardá este código. El vendedor lo necesita para confirmar la entrega.</div>
+        </div>
+
+        <button class="btn-wa" style="width:100%;border-radius:12px;padding:14px;font-size:14px;margin-bottom:12px;">
+          💬 Abrir WhatsApp con el vendedor
+        </button>
+        <button class="btn-outline" style="width:100%;border-radius:12px;padding:12px;font-size:13px;border:1.5px solid var(--gray-300);">
+          📤 Compartir código
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-sep" />
+
+  <!-- ══════════ DASHBOARD ══════════ -->
+  <div class="screen-section">
+    <div class="screen-label">Pantalla 5 — Dashboard del Vendedor (Desktop)</div>
+    <div class="section-heading">Panel del Artesano</div>
+    <div class="section-desc">/dashboard — Gestión de productos, pedidos y estadísticas</div>
+    <div class="desktop-frame">
+      <div class="dashboard-wrap">
+
+        <!-- Sidebar -->
+        <div class="dash-sidebar">
+          <div class="dash-logo">Mercado<span>Artesano</span></div>
+          <div class="dash-user-info">
+            <div class="dash-avatar">J</div>
+            <div>
+              <div class="dash-user-name">El Matero de Juan</div>
+              <div class="dash-user-role">✅ Artesano Verificado · Pro</div>
+            </div>
+          </div>
+          <nav class="dash-nav">
+            <div class="dash-nav-item active"><span class="dash-nav-icon">📊</span> Resumen</div>
+            <div class="dash-nav-item"><span class="dash-nav-icon">📦</span> Mis Productos</div>
+            <div class="dash-nav-item"><span class="dash-nav-icon">🛒</span> Pedidos</div>
+            <div class="dash-nav-item"><span class="dash-nav-icon">📈</span> Estadísticas</div>
+            <div class="dash-nav-item"><span class="dash-nav-icon">🏪</span> Mi Tienda</div>
+            <div class="dash-nav-item"><span class="dash-nav-icon">⚙️</span> Configuración</div>
+          </nav>
+          <div style="padding:16px 20px;border-top:1px solid rgba(255,255,255,0.1);">
+            <div style="font-size:11px;color:var(--gray-500);margin-bottom:6px;">Plan actual</div>
+            <div style="background:linear-gradient(135deg,var(--green-800),var(--brown-600));border-radius:8px;padding:8px 12px;color:white;font-size:12px;font-weight:700;">
+              ⚡ PRO — Activo
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="dash-content">
+          <div class="dash-header">
+            <div>
+              <h2>Buen día, Juan 👋</h2>
+              <div style="font-size:12px;color:var(--gray-500);">Sábado, 21 de Junio 2026</div>
+            </div>
+            <button class="btn-sm-primary">+ Nuevo Producto</button>
+          </div>
+
+          <div class="dash-body">
+            <!-- Stats -->
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-card-icon">👁</div>
+                <div class="stat-card-num">1.842</div>
+                <div class="stat-card-label">Vistas este mes</div>
+                <div class="stat-card-trend">↑ +23% vs mes anterior</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-icon">❤️</div>
+                <div class="stat-card-num">94</div>
+                <div class="stat-card-label">Productos guardados</div>
+                <div class="stat-card-trend">↑ +8 esta semana</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-icon">🛒</div>
+                <div class="stat-card-num">31</div>
+                <div class="stat-card-label">Pedidos generados</div>
+                <div class="stat-card-trend">↑ +5 este mes</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-card-icon">⭐</div>
+                <div class="stat-card-num">47</div>
+                <div class="stat-card-label">Reputación</div>
+                <div class="stat-card-trend">47 entregas confirmadas</div>
+              </div>
+            </div>
+
+            <!-- Products Table -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <div style="font-size:14px;font-weight:700;color:var(--gray-900);">Mis Productos</div>
+              <div style="font-size:12px;color:var(--green-700);cursor:pointer;font-weight:600;">Ver todos →</div>
+            </div>
+            <div class="products-table">
+              <div class="table-header">
+                <span>Producto</span>
+                <span>Precio</span>
+                <span>Stock</span>
+                <span>Vistas</span>
+                <span>Acciones</span>
+              </div>
+              <div class="table-row">
+                <div class="table-product-cell">
+                  <div class="table-thumb">🧉</div>
+                  <div>
+                    <div class="table-product-name">Imperial Palo Santo Tallado</div>
+                    <div class="table-product-cat">Mates Imperiales · Minorista</div>
+                  </div>
+                </div>
+                <div style="font-weight:700;color:var(--green-800);">$8.500</div>
+                <div><span class="status-pill status-green">🟢 Disponible</span></div>
+                <div style="color:var(--gray-700);">342</div>
+                <div class="action-btn-row">
+                  <div class="icon-btn">✏️</div>
+                  <div class="icon-btn">👁</div>
+                  <div class="icon-btn" style="color:var(--red);">🗑</div>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-product-cell">
+                  <div class="table-thumb">🍐</div>
+                  <div>
+                    <div class="table-product-name">Torpedo Lapacho + Virola</div>
+                    <div class="table-product-cat">Torpedos · Minorista</div>
+                  </div>
+                </div>
+                <div style="font-weight:700;color:var(--green-800);">$11.000</div>
+                <div><span class="status-pill status-amber">🟡 Por encargo</span></div>
+                <div style="color:var(--gray-700);">521</div>
+                <div class="action-btn-row">
+                  <div class="icon-btn">✏️</div>
+                  <div class="icon-btn">👁</div>
+                  <div class="icon-btn" style="color:var(--red);">🗑</div>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-product-cell">
+                  <div class="table-thumb">🎋</div>
+                  <div>
+                    <div class="table-product-name">Pack 3 Mates Imperiales</div>
+                    <div class="table-product-cat">Mates Imperiales · Mayorista</div>
+                  </div>
+                </div>
+                <div style="font-weight:700;color:var(--green-800);">$21.000</div>
+                <div><span class="status-pill status-green">🟢 Disponible</span></div>
+                <div style="color:var(--gray-700);">98</div>
+                <div class="action-btn-row">
+                  <div class="icon-btn">✏️</div>
+                  <div class="icon-btn">👁</div>
+                  <div class="icon-btn" style="color:var(--red);">🗑</div>
+                </div>
+              </div>
+              <div class="table-row">
+                <div class="table-product-cell">
+                  <div class="table-thumb">🌀</div>
+                  <div>
+                    <div class="table-product-name">Camionero Quebracho Colorado</div>
+                    <div class="table-product-cat">Camioneros · Minorista</div>
+                  </div>
+                </div>
+                <div style="font-weight:700;color:var(--green-800);">$6.200</div>
+                <div><span class="status-pill status-red">🔴 Sin stock</span></div>
+                <div style="color:var(--gray-700);">187</div>
+                <div class="action-btn-row">
+                  <div class="icon-btn">✏️</div>
+                  <div class="icon-btn">👁</div>
+                  <div class="icon-btn" style="color:var(--red);">🗑</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-sep" />
+
+  <!-- ══════════ ADMIN ══════════ -->
+  <div class="screen-section">
+    <div class="screen-label">Pantalla 6 — Panel Administrador (Desktop)</div>
+    <div class="section-heading">Panel de Administración</div>
+    <div class="section-desc">/admin — Solo para rol admin. Control total de usuarios, reportes y estadísticas globales</div>
+    <div class="desktop-frame">
+      <div class="dashboard-wrap">
+
+        <div class="dash-sidebar admin-sidebar">
+          <div class="dash-logo">🛡️ Admin</div>
+          <div class="dash-user-info">
+            <div class="dash-avatar" style="background:var(--gold);">A</div>
+            <div>
+              <div class="dash-user-name">Administrador</div>
+              <div class="dash-user-role" style="color:var(--gold);">Super Admin</div>
+            </div>
+          </div>
+          <nav class="dash-nav">
+            <div class="dash-nav-item active"><span class="dash-nav-icon">📊</span> Overview</div>
+            <div class="dash-nav-item"><span class="dash-nav-icon">👥</span> Usuarios</div>
+            <div class="dash-nav-item"><span class="dash-nav-icon">🚩</span> Reportes</div>
+            <div class="dash-nav-item"><span class="dash-nav-icon">🏷️</span> Categorías</div>
+            <div class="dash-nav-item"><span class="dash-nav-icon">📦</span> Productos</div>
+            <div class="dash-nav-item"><span class="dash-nav-icon">⚙️</span> Config</div>
+          </nav>
+        </div>
+
+        <div class="dash-content">
+          <div class="dash-header">
+            <div>
+              <h2>Panel de Administración</h2>
+              <div style="font-size:12px;color:var(--gray-500);">Estadísticas globales de la plataforma</div>
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn-sm-primary" style="background:var(--gold);">+ Aprobar Artesanos (3)</button>
+              <button class="btn-sm-primary">📤 Exportar</button>
+            </div>
+          </div>
+
+          <div class="dash-body">
+            <div class="stats-grid">
+              <div class="stat-card" style="border-top:3px solid var(--green-700);">
+                <div class="stat-card-icon">👥</div>
+                <div class="stat-card-num">284</div>
+                <div class="stat-card-label">Usuarios registrados</div>
+                <div class="stat-card-trend">↑ +12 esta semana</div>
+              </div>
+              <div class="stat-card" style="border-top:3px solid var(--brown-400);">
+                <div class="stat-card-icon">📦</div>
+                <div class="stat-card-num">1.247</div>
+                <div class="stat-card-label">Productos publicados</div>
+                <div class="stat-card-trend">↑ +89 este mes</div>
+              </div>
+              <div class="stat-card" style="border-top:3px solid var(--gold);">
+                <div class="stat-card-icon">🛒</div>
+                <div class="stat-card-num">3.891</div>
+                <div class="stat-card-label">Pedidos generados</div>
+                <div class="stat-card-trend">↑ +234 este mes</div>
+              </div>
+              <div class="stat-card" style="border-top:3px solid var(--red);">
+                <div class="stat-card-icon">🚩</div>
+                <div class="stat-card-num">7</div>
+                <div class="stat-card-label">Reportes pendientes</div>
+                <div class="stat-card-trend" style="color:var(--red);">⚠ Requieren revisión</div>
+              </div>
+            </div>
+
+            <!-- Users Table -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <div style="font-size:14px;font-weight:700;color:var(--gray-900);">Últimos usuarios registrados</div>
+              <input style="border:1px solid var(--gray-300);border-radius:8px;padding:5px 12px;font-size:12px;" placeholder="🔍 Buscar usuario..." />
+            </div>
+            <div class="products-table">
+              <div class="table-header" style="grid-template-columns:2fr 1fr 1fr 1fr 100px;">
+                <span>Usuario</span>
+                <span>Rol</span>
+                <span>Plan</span>
+                <span>Estado</span>
+                <span>Acciones</span>
+              </div>
+              <div class="table-row" style="grid-template-columns:2fr 1fr 1fr 1fr 100px;">
+                <div class="table-product-cell">
+                  <div class="artisan-avatar" style="width:36px;height:36px;font-size:13px;">J</div>
+                  <div>
+                    <div class="table-product-name">juanelmatero</div>
+                    <div class="table-product-cat">juan@example.com</div>
+                  </div>
+                </div>
+                <div><span class="status-pill status-green">🎨 Artesano</span></div>
+                <div><span class="status-pill" style="background:#ede9fe;color:#6d28d9;border:1px solid #ddd6fe;">⚡ Pro</span></div>
+                <div><span class="status-pill status-green">✅ Verificado</span></div>
+                <div class="action-btn-row">
+                  <div class="icon-btn">👁</div>
+                  <div class="icon-btn" style="color:var(--red);">🚫</div>
+                </div>
+              </div>
+              <div class="table-row" style="grid-template-columns:2fr 1fr 1fr 1fr 100px;">
+                <div class="table-product-cell">
+                  <div class="artisan-avatar" style="width:36px;height:36px;font-size:13px;background:var(--brown-600);">M</div>
+                  <div>
+                    <div class="table-product-name">mariacueros</div>
+                    <div class="table-product-cat">maria@example.com</div>
+                  </div>
+                </div>
+                <div><span class="status-pill status-green">🎨 Artesano</span></div>
+                <div><span class="status-pill" style="background:var(--gray-100);color:var(--gray-500);border:1px solid var(--gray-200);">Free</span></div>
+                <div><span class="status-pill status-green">✅ Verificado</span></div>
+                <div class="action-btn-row">
+                  <div class="icon-btn">👁</div>
+                  <div class="icon-btn" style="color:var(--red);">🚫</div>
+                </div>
+              </div>
+              <div class="table-row" style="grid-template-columns:2fr 1fr 1fr 1fr 100px;">
+                <div class="table-product-cell">
+                  <div class="artisan-avatar" style="width:36px;height:36px;font-size:13px;background:var(--green-600);">S</div>
+                  <div>
+                    <div class="table-product-name">sofiacalabazas</div>
+                    <div class="table-product-cat">sofia@example.com</div>
+                  </div>
+                </div>
+                <div><span class="status-pill status-green">🎨 Artesano</span></div>
+                <div><span class="status-pill" style="background:var(--gray-100);color:var(--gray-500);border:1px solid var(--gray-200);">Free</span></div>
+                <div><span class="status-pill status-amber">⏳ Pendiente</span></div>
+                <div class="action-btn-row">
+                  <div class="icon-btn" style="color:var(--green-700);">✅</div>
+                  <div class="icon-btn" style="color:var(--red);">🚫</div>
+                </div>
+              </div>
+              <div class="table-row" style="grid-template-columns:2fr 1fr 1fr 1fr 100px;">
+                <div class="table-product-cell">
+                  <div class="artisan-avatar" style="width:36px;height:36px;font-size:13px;background:var(--brown-800);">C</div>
+                  <div>
+                    <div class="table-product-name">carlosbombillas</div>
+                    <div class="table-product-cat">carlos@example.com</div>
+                  </div>
+                </div>
+                <div><span class="status-pill" style="background:#dbeafe;color:#1e40af;border:1px solid #bfdbfe;">🏭 Proveedor</span></div>
+                <div><span class="status-pill" style="background:linear-gradient(135deg,#fde68a,#f59e0b);color:white;border:none;">👑 Premium</span></div>
+                <div><span class="status-pill status-green">✅ Verificado</span></div>
+                <div class="action-btn-row">
+                  <div class="icon-btn">👁</div>
+                  <div class="icon-btn" style="color:var(--red);">🚫</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-sep" />
+
+  <!-- ══════════ PALETTE ══════════ -->
+  <div class="screen-section">
+    <div class="screen-label">Diseño — Paleta de colores</div>
+    <div class="section-heading">Identidad Visual</div>
+    <div class="section-desc">Paleta artesanal argentina — Verdes naturales, marrones tierra, dorado y blanco crema</div>
+    <div class="flow-section">
+      <div class="palette-row">
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#1a3009;"></div>
+          <div class="palette-name">Verde 900</div>
+        </div>
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#2D5016;"></div>
+          <div class="palette-name">Verde Primary</div>
+        </div>
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#5fa531;"></div>
+          <div class="palette-name">Verde 500</div>
+        </div>
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#eaf4df;"></div>
+          <div class="palette-name">Verde 100</div>
+        </div>
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#3b2005;"></div>
+          <div class="palette-name">Marrón 800</div>
+        </div>
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#6b3d11;"></div>
+          <div class="palette-name">Marrón 600</div>
+        </div>
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#a0632b;"></div>
+          <div class="palette-name">Marrón 400</div>
+        </div>
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#d4a574;"></div>
+          <div class="palette-name">Marrón 200</div>
+        </div>
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#c9931a;"></div>
+          <div class="palette-name">Dorado</div>
+        </div>
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#fdf8f0;border:1px solid #e5e7eb;"></div>
+          <div class="palette-name">Crema</div>
+        </div>
+        <div class="palette-chip">
+          <div class="palette-color" style="background:#25D366;"></div>
+          <div class="palette-name">WhatsApp</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER NOTE -->
+  <div style="text-align:center;margin-top:40px;color:var(--gray-500);font-size:12px;">
+    <strong>MercadoArtesano</strong> — Presentación visual del sistema · Next.js 15 · TypeScript · Tailwind CSS · Shadcn/UI · Prisma · PostgreSQL
+    <br/><br/>
+    Stack: Next.js 15 · NextAuth v5 · TanStack Query · Zustand · Cloudflare R2 · QR Codes · WhatsApp Integration
+  </div>
+
+</div>
+</body>
+</html>
