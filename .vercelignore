@@ -1,0 +1,4 @@
+preview.html
+prisma/seed.ts
+*.md
+.env.local
