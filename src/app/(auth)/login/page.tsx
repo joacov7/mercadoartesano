@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -11,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard";
@@ -45,6 +46,56 @@ export default function LoginPage() {
   };
 
   return (
+    <Card>
+      <CardHeader className="text-center">
+        <CardTitle>Ingresar</CardTitle>
+        <CardDescription>Accedé a tu cuenta de artesano</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              placeholder="tu@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Contraseña</Label>
+            <Input
+              id="password"
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={isLoading}
+            />
+          </div>
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Ingresar
+          </Button>
+        </form>
+
+        <div className="mt-4 text-center text-sm">
+          <span className="text-muted-foreground">¿No tenés cuenta? </span>
+          <Link href="/registro" className="text-primary hover:underline font-medium">
+            Registrate gratis
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-sm">
         <div className="flex justify-center mb-6">
@@ -54,51 +105,9 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <Card>
-          <CardHeader className="text-center">
-            <CardTitle>Ingresar</CardTitle>
-            <CardDescription>Accedé a tu cuenta de artesano</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="tu@email.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Contraseña</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  disabled={isLoading}
-                />
-              </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Ingresar
-              </Button>
-            </form>
-
-            <div className="mt-4 text-center text-sm">
-              <span className="text-muted-foreground">¿No tenés cuenta? </span>
-              <Link href="/registro" className="text-primary hover:underline font-medium">
-                Registrate gratis
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        <Suspense fallback={<div className="h-64 rounded-lg bg-muted animate-pulse" />}>
+          <LoginForm />
+        </Suspense>
       </div>
     </div>
   );
