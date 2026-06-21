@@ -1,0 +1,188 @@
+// This is your Prisma schema file
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Rol {
+  artesano
+  proveedor
+  cliente
+  admin
+}
+
+enum Plan {
+  free
+  pro
+  premium
+}
+
+enum TipoVenta {
+  mayorista
+  minorista
+  ambos
+}
+
+enum StockEstado {
+  disponible
+  por_encargo
+  sin_stock
+}
+
+enum EstadoPedido {
+  pendiente
+  entregado
+  cancelado
+}
+
+enum EstadoReporte {
+  pendiente
+  revisado
+  resuelto
+}
+
+enum Categoria {
+  mates_imperiales
+  camioneros
+  torpedos
+  calabazas
+  virolas
+  bombillas
+  cueros
+  herramientas
+  accesorios
+}
+
+model Usuario {
+  id                      String    @id @default(cuid())
+  username                String    @unique
+  email                   String    @unique
+  passwordHash            String    @map("password_hash")
+  nombreMarca             String?   @map("nombre_marca")
+  logoUrl                 String?   @map("logo_url")
+  bannerUrl               String?   @map("banner_url")
+  biografia               String?
+  whatsapp                String?
+  instagram               String?
+  provincia               String?
+  localidad               String?
+  rol                     Rol       @default(cliente)
+  reputacionVotosPositivos Int      @default(0) @map("reputacion_votos_positivos")
+  entregasConfirmadas     Int       @default(0) @map("entregas_confirmadas")
+  verificado              Boolean   @default(false)
+  plan                    Plan      @default(free)
+  activo                  Boolean   @default(true)
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+
+  productos               Producto[]
+  pedidosComoComprador    Pedido[]   @relation("Comprador")
+  pedidosComoVendedor     Pedido[]   @relation("Vendedor")
+  favoritos               Favorito[]
+  seguidores              Seguidor[] @relation("Artesano")
+  siguiendo               Seguidor[] @relation("Seguidor")
+  reportesRealizados      Reporte[]  @relation("Reportante")
+  reportesRecibidos       Reporte[]  @relation("Reportado")
+  productViews            ProductView[]
+
+  @@map("usuarios")
+}
+
+model Producto {
+  id          String      @id @default(cuid())
+  usuarioId   String      @map("usuario_id")
+  titulo      String
+  descripcion String?
+  precio      Decimal     @db.Decimal(10, 2)
+  categoria   Categoria
+  tipoVenta   TipoVenta   @default(minorista) @map("tipo_venta")
+  stockEstado StockEstado @default(disponible) @map("stock_estado")
+  fotosUrls   String[]    @map("fotos_urls")
+  destacado   Boolean     @default(false)
+  activo      Boolean     @default(true)
+  vistas      Int         @default(0)
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+
+  usuario     Usuario     @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  pedidos     Pedido[]
+  favoritos   Favorito[]
+  views       ProductView[]
+
+  @@map("productos")
+}
+
+model Pedido {
+  id           String       @id @default(cuid())
+  compradorId  String       @map("comprador_id")
+  vendedorId   String       @map("vendedor_id")
+  productoId   String       @map("producto_id")
+  codigoQrHash String       @unique @map("codigo_qr_hash")
+  estado       EstadoPedido @default(pendiente)
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+
+  comprador    Usuario      @relation("Comprador", fields: [compradorId], references: [id])
+  vendedor     Usuario      @relation("Vendedor", fields: [vendedorId], references: [id])
+  producto     Producto     @relation(fields: [productoId], references: [id])
+
+  @@map("pedidos")
+}
+
+model Favorito {
+  id         String   @id @default(cuid())
+  usuarioId  String   @map("usuario_id")
+  productoId String   @map("producto_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  producto   Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, productoId])
+  @@map("favoritos")
+}
+
+model Seguidor {
+  id         String   @id @default(cuid())
+  usuarioId  String   @map("usuario_id")
+  artesanoId String   @map("artesano_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  usuario    Usuario  @relation("Seguidor", fields: [usuarioId], references: [id], onDelete: Cascade)
+  artesano   Usuario  @relation("Artesano", fields: [artesanoId], references: [id], onDelete: Cascade)
+
+  @@unique([usuarioId, artesanoId])
+  @@map("seguidores")
+}
+
+model Reporte {
+  id                String        @id @default(cuid())
+  usuarioReportante String        @map("usuario_reportante")
+  usuarioReportado  String        @map("usuario_reportado")
+  motivo            String
+  estado            EstadoReporte @default(pendiente)
+  createdAt         DateTime      @default(now()) @map("created_at")
+
+  reportante        Usuario       @relation("Reportante", fields: [usuarioReportante], references: [id])
+  reportado         Usuario       @relation("Reportado", fields: [usuarioReportado], references: [id])
+
+  @@map("reportes")
+}
+
+model ProductView {
+  id         String   @id @default(cuid())
+  productoId String   @map("producto_id")
+  visitanteId String? @map("visitante_id")
+  ip         String?
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  producto   Producto @relation(fields: [productoId], references: [id], onDelete: Cascade)
+  visitante  Usuario? @relation(fields: [visitanteId], references: [id], onDelete: SetNull)
+
+  @@map("product_views")
+}
