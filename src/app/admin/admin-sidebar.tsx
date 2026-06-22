@@ -2,14 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Coffee, LayoutDashboard, Users, FileText, Home, ShieldCheck } from "lucide-react";
+import { LayoutDashboard, Users, FileText, Home, ShieldCheck, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/admin", label: "Panel Admin", icon: LayoutDashboard, exact: true },
   { href: "/admin/usuarios", label: "Usuarios", icon: Users },
   { href: "/admin/reportes", label: "Reportes", icon: FileText },
-  { href: "/dashboard", label: "Mi Dashboard", icon: Home },
 ];
 
 export function AdminSidebar() {
@@ -39,6 +38,22 @@ export function AdminSidebar() {
           );
         })}
       </nav>
+      <div className="p-2 border-t space-y-1">
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+        >
+          <Home className="h-4 w-4 shrink-0" />
+          <span className="hidden sm:block">Mi Dashboard</span>
+        </Link>
+        <Link
+          href="/"
+          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+        >
+          <ArrowLeft className="h-4 w-4 shrink-0" />
+          <span className="hidden sm:block">Volver al inicio</span>
+        </Link>
+      </div>
     </aside>
   );
 }
