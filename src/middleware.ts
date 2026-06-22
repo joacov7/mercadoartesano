@@ -1,35 +1,39 @@
-import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export default auth((req) => {
-  const { nextUrl, auth: session } = req;
-  const isLoggedIn = !!session;
+export async function middleware(req: NextRequest) {
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
-  const isDashboard = nextUrl.pathname.startsWith("/dashboard");
-  const isAdmin = nextUrl.pathname.startsWith("/admin");
-  const isAuthPage =
-    nextUrl.pathname.startsWith("/login") ||
-    nextUrl.pathname.startsWith("/registro");
+  const { pathname } = req.nextUrl;
+  const isLoggedIn = !!token;
+
+  const isDashboard = pathname.startsWith("/dashboard");
+  const isAdmin = pathname.startsWith("/admin");
+  const isAuthPage = pathname === "/login" || pathname === "/registro";
 
   if ((isDashboard || isAdmin) && !isLoggedIn) {
-    const loginUrl = new URL("/login", nextUrl.origin);
-    loginUrl.searchParams.set("callbackUrl", nextUrl.pathname);
+    const loginUrl = new URL("/login", req.url);
+    loginUrl.searchParams.set("callbackUrl", pathname);
     return NextResponse.redirect(loginUrl);
   }
 
   if (isAdmin && isLoggedIn) {
-    const userRol = (session?.user as any)?.rol;
-    if (userRol !== "admin") {
-      return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
+    const rol = token?.rol as string | undefined;
+    if (rol !== "admin") {
+      return NextResponse.redirect(new URL("/dashboard", req.url));
     }
   }
 
   if (isAuthPage && isLoggedIn) {
-    return NextResponse.redirect(new URL("/dashboard", nextUrl.origin));
+    return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
   return NextResponse.next();
-});
+}
 
 export const config = {
   matcher: [
