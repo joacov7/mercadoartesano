@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
-import { LayoutDashboard, Package, ShoppingBag, BarChart3, Coffee, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingBag, BarChart3, Coffee, LogOut, UserCircle } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn, getInitials } from "@/lib/utils";
@@ -24,6 +24,7 @@ const navItems = [
   { href: "/dashboard/productos", label: "Mis productos", icon: Package },
   { href: "/dashboard/pedidos", label: "Pedidos", icon: ShoppingBag },
   { href: "/dashboard/estadisticas", label: "Estadísticas", icon: BarChart3 },
+  { href: "/dashboard/perfil", label: "Mi Perfil", icon: UserCircle },
 ];
 
 export function DashboardSidebar({ user }: SidebarProps) {

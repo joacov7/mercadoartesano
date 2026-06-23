@@ -30,7 +30,9 @@ export async function POST(req: NextRequest) {
 
     const userId = (session.user as any).id;
     const ext = file.type.split("/")[1];
-    const key = `productos/${userId}/${nanoid()}.${ext}`;
+    const type = (formData.get("type") as string) ?? "producto";
+    const folder = type === "banner" ? "banners" : type === "logo" ? "logos" : "productos";
+    const key = `${folder}/${userId}/${nanoid()}.${ext}`;
 
     const buffer = Buffer.from(await file.arrayBuffer());
     const url = await uploadToR2(key, buffer, file.type);
